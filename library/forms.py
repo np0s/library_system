@@ -22,8 +22,25 @@ class UserRegistrationForm(UserCreationForm):
 class UserLoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields.values():
+        # apply consistent styling and explicit attributes
+        for name, field in self.fields.items():
             field.widget.attrs['class'] = 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white'
+        # ensure explicit ids/placeholders/names/autocomplete for accessibility
+        if 'username' in self.fields:
+            self.fields['username'].widget.attrs.update({
+                'id': 'id_username',
+                'name': 'username',
+                'placeholder': 'Username',
+                'autocomplete': 'username',
+                'autofocus': 'autofocus',
+            })
+        if 'password' in self.fields:
+            self.fields['password'].widget.attrs.update({
+                'id': 'id_password',
+                'name': 'password',
+                'placeholder': 'Password',
+                'autocomplete': 'current-password',
+            })
 
 
 class MemberForm(forms.ModelForm):
@@ -67,4 +84,4 @@ class BorrowForm(forms.Form):
         widget=forms.Select(attrs={
             'class': 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white'
         })
-    ) 
+    )

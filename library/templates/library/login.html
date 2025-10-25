@@ -24,18 +24,29 @@
         
         <form class="mt-8 space-y-6" method="post">
             {% csrf_token %}
-            <div class="rounded-md shadow-sm -space-y-px">
+            <div class="space-y-4">
                 <div>
-                    <label for="{{ form.username.id_for_label }}" class="sr-only">Username</label>
+                    <label for="{{ form.username.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Username
+                    </label>
                     {{ form.username }}
+                    {% if form.username.errors %}
+                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.username.errors.0 }}</p>
+                    {% endif %}
                 </div>
+
                 <div>
-                    <label for="{{ form.password.id_for_label }}" class="sr-only">Password</label>
+                    <label for="{{ form.password.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Password
+                    </label>
                     {{ form.password }}
+                    {% if form.password.errors %}
+                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.password.errors.0 }}</p>
+                    {% endif %}
                 </div>
             </div>
 
-            {% if form.errors %}
+            {% if form.non_field_errors %}
                 <div class="rounded-md bg-red-50 dark:bg-red-900/20 p-4">
                     <div class="flex">
                         <div class="flex-shrink-0">
@@ -49,10 +60,8 @@
                             </h3>
                             <div class="mt-2 text-sm text-red-700 dark:text-red-300">
                                 <ul class="list-disc pl-5 space-y-1">
-                                    {% for field, errors in form.errors.items %}
-                                        {% for error in errors %}
-                                            <li>{{ error }}</li>
-                                        {% endfor %}
+                                    {% for error in form.non_field_errors %}
+                                        <li>{{ error }}</li>
                                     {% endfor %}
                                 </ul>
                             </div>
@@ -74,4 +83,4 @@
         </form>
     </div>
 </div>
-{% endblock %} 
+{% endblock %}
